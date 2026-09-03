@@ -89,7 +89,12 @@ fn committed_schemas_are_current_and_reproducible() {
 
 #[test]
 fn every_schema_is_a_valid_json_schema() {
-    for name in [rojo_schema::PROJECT, rojo_schema::META, rojo_schema::MODEL] {
+    for name in [
+        rojo_schema::PROJECT,
+        rojo_schema::META,
+        rojo_schema::MODEL,
+        rojo_schema::INPUT_ACTION_SYSTEM,
+    ] {
         let _ = validator(name);
     }
 }

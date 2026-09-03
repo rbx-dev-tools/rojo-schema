@@ -1,0 +1,22 @@
+{
+  "ClassName": "InputContext",
+  "Children": [
+    {
+      "ClassName": "InputAction",
+      "Name": "Jump",
+      "Properties": {
+        "Type": "Bool"
+      },
+      "Children": [
+        {
+          "ClassName": "InputBinding",
+          "Name": "Keyboard",
+          "Properties": {
+            "KeyCode": "Space"
+          },
+          "Children": []
+        }
+      ]
+    }
+  ]
+}

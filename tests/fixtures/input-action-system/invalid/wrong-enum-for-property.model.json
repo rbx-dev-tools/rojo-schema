@@ -1,0 +1,12 @@
+{
+  "ClassName": "InputContext",
+  "Children": [
+    {
+      "ClassName": "InputAction",
+      "Name": "Attack",
+      "Properties": {
+        "Type": "Automatic"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "ClassName": "InputContext",
+  "Children": [
+    {
+      "ClassName": "InputBinding",
+      "Name": "Skipped the action",
+      "Properties": {
+        "KeyCode": "Space"
+      }
+    }
+  ]
+}

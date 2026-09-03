@@ -1,0 +1,9 @@
+{
+  "ClassName": "InputContext",
+  "Children": [
+    {
+      "ClassName": "Folder",
+      "Name": "Grouping"
+    }
+  ]
+}

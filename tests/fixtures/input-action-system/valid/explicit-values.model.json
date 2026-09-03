@@ -1,0 +1,32 @@
+{
+  "ClassName": "InputContext",
+  "Children": [
+    {
+      "ClassName": "InputAction",
+      "Name": "Fly",
+      "Properties": {
+        "Type": "Direction3D"
+      },
+      "Children": [
+        {
+          "ClassName": "InputBinding",
+          "Name": "Keyboard",
+          "Properties": {
+            "Forward": "W",
+            "Backward": "S",
+            "Left": "A",
+            "Right": "D",
+            "Up": "Space",
+            "Down": "LeftControl",
+            "PrimaryModifier": "LeftShift",
+            "Vector3Scale": [1, 1, 1],
+            "PointerIndex": 0,
+            "UIButton": {
+              "Ref": "fly-button"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

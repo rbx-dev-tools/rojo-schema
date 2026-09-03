@@ -1,16 +1,22 @@
 # rojo-schema
 
-JSON Schemas for the three file formats Rojo reads, compiled from Rojo's own
-source rather than written by hand.
+JSON Schemas for the file formats Rojo reads, compiled from Rojo's own source
+rather than written by hand.
 
-| Schema                      | Applies to                                  |
-| --------------------------- | ------------------------------------------- |
-| `schema/project.schema.json` | `*.project.json`                            |
-| `schema/meta.schema.json`    | `*.meta.json`, including `init.meta.json`   |
-| `schema/model.schema.json`   | `*.model.json`                              |
+| Schema                                  | Applies to                                |
+| --------------------------------------- | ----------------------------------------- |
+| `schema/project.schema.json`             | `*.project.json`                          |
+| `schema/meta.schema.json`                | `*.meta.json`, including `init.meta.json` |
+| `schema/model.schema.json`               | `*.model.json`                            |
+| `schema/input-action-system.schema.json` | an input action tree, opted into by name  |
 
-`schema/manifest.json` records which Rojo release the three were compiled from,
-the digest of every source file that fed them, and the digest of each schema.
+The first three describe a format as Rojo reads it. The fourth is different in
+kind: it narrows the model format to one purpose, and is described under
+[Input action trees](#input-action-trees).
+
+`schema/manifest.json` records which Rojo release the schemas were compiled
+from, the reflection database behind the input action schema, the digest of
+every source file that fed them, and the digest of each schema.
 
 ## Using them
 
@@ -54,12 +60,78 @@ Use a `raw.githubusercontent.com` URL rather than a release asset:
 `github.com/.../releases/download/...` redirects to a signed host, which cannot
 be allowlisted by prefix at all.
 
+## Input action trees
+
+`input-action-system.schema.json` validates a `.model.json` holding one
+`InputContext`, the `InputAction` instances under it, and the `InputBinding`
+instances under those. It is the narrow schema: point a file at it instead of
+the model schema and an editor will complete key codes, refuse a class that has
+no business in the tree, and catch a binding that contradicts its action.
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/rbx-forge/rojo-schema/main/schema/input-action-system.schema.json",
+  "ClassName": "InputContext",
+  "Children": [
+    {
+      "ClassName": "InputAction",
+      "Name": "Move",
+      "Properties": { "Type": "Direction2D" },
+      "Children": [
+        {
+          "ClassName": "InputBinding",
+          "Name": "Keyboard",
+          "Properties": { "Forward": "W", "Backward": "S", "Left": "A", "Right": "D" }
+        }
+      ]
+    }
+  ]
+}
+```
+
+What it enforces beyond the model schema:
+
+- **One context per file, and one nesting order.** The root is an
+  `InputContext`; only `InputAction` sits under it, only `InputBinding` under
+  those, and nothing under a binding, which has no children key at all.
+- **Only the properties a file can set.** The read-only members are dropped, so
+  `BoolState` and the direction states of an `InputAction` are refused: they are
+  what the engine reports, not what a file asks for. Nothing is listed by hand.
+  The reflection database says which properties are read-only, non-serialising
+  or invisible to scripts, and those are the ones that go.
+- **Property values typed the way Rojo resolves them.** `Priority` is a number,
+  `KeyCode` is a member of `Enum.KeyCode` by name, `Vector2Scale` is two
+  numbers. Rojo's explicit form, `{ "Vector3": [0, 1, 0] }`, stays accepted
+  everywhere. A `Ref` property has no shorthand at all, so only the explicit
+  form is offered for it.
+- **Unknown keys.** Rojo ignores a key it does not recognise. This schema
+  refuses it, because a file opts into this schema to have its typos caught.
+
+One thing here is written by hand, because Roblox publishes it nowhere as data:
+the three classes and how they nest. Everything else, including every enum
+member, comes out of the reflection database bundled with
+`rbx_reflection_database`, so the schema follows Roblox rather than a snapshot
+of it.
+
+What the schema does **not** check is which binding properties suit the `Type`
+of the action above them. A `Vector3Scale` under a `Direction2D` action passes,
+and so does a `KeyCode` on a binding whose own `Type` is `Scriptable`. Roblox
+documents none of this: the members of `InputActionType` and `InputBindingType`
+carry no descriptions, and the input action guide does not tie a binding
+property to an action type. Encoding it would mean writing a table of rules with
+nothing to check it against, and a schema that wrongly rejects a valid file is
+worse than one that stays quiet, because the first thing anyone does with it is
+turn it off. It stays out until Roblox says.
+
+This schema moves with the reflection database rather than with Rojo, so it can
+change in a release where the other three do not.
+
 ## Releases
 
 Every distinct set of schemas gets its own release, named after the Rojo release
-it describes: `rojo-7.7.0`. Each one carries the three schemas and the manifest
-as assets, and the notes state the Rojo tag, the generator version and the
-digest of each file. The tag is what a project pins against, through the raw URL
+it describes: `rojo-7.7.0`. Each one carries every schema and the manifest as
+assets, and the notes state the Rojo tag, the generator version and the digest
+of each file. The tag is what a project pins against, through the raw URL
 above; the assets are there for anything that downloads rather than fetches.
 
 Releases are immutable. If the compiler itself changes and produces different
@@ -130,10 +202,12 @@ stale both fail loudly.
 ## What these schemas do not do
 
 - **Property values are not typed per class.** `$properties` accepts any value
-  Rojo would resolve, but the schema does not know that `Workspace.Gravity` is a
-  number. Doing better means pulling in Roblox's reflection database, a second
-  source that moves on its own schedule, and it is deliberately out of scope: a
-  schema compiled from Rojo alone is one that follows Rojo alone.
+  Rojo would resolve, but the project, meta and model schemas do not know that
+  `Workspace.Gravity` is a number. Typing every class means pulling in Roblox's
+  reflection database, a second source that moves on its own schedule, and it
+  stays out of scope for those three: a schema compiled from Rojo alone is one
+  that follows Rojo alone. The input action schema is the deliberate exception,
+  narrow enough to be worth the second source.
 - **Comments are a parser concern, not a schema one.** Rojo reads all three
   formats as JSONC, so comments and a `.jsonc` extension are fine. A validator
   has to strip them before validating, as editors already do.
@@ -153,6 +227,7 @@ src/ty.rs      the subset of Rust types the grammar is written in
 src/ir.rs      syn AST to a serde-aware intermediate form
 src/emit.rs    intermediate form to JSON Schema
 src/vendor.rs  the pin file, its digests, and refreshing it from a tag
+src/reflection.rs  the input action schema, compiled from the reflection database
 schema/        the generated documents, committed
 tests/         fixtures Rojo accepts and fixtures it rejects
 ```

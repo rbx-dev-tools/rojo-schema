@@ -4,12 +4,16 @@
     "name": "rojo-schema",
     "version": "0.1.0"
   },
+  "roblox": {
+    "reflectionDatabase": "0.728.0.7280895"
+  },
   "rojo": {
     "repository": "https://github.com/rojo-rbx/rojo",
     "tag": "v7.7.0",
     "version": "7.7.0"
   },
   "schemas": {
+    "input-action-system.schema.json": "851f33215f602ef9f0dbf1cf3b09a2e4822b18baaf3f8fc072316b8258cb358d",
     "meta.schema.json": "8097426a8c97fafb29ca020ab0c2b3a7107113ccbcee4f4cb1bd95a8b308a631",
     "model.schema.json": "eeb91a3c41d44f27bf63e9b4f5a8323f444eb04b3bd56d7d873daacff2244a07",
     "project.schema.json": "9b0fb08ce498788f2b5125ae924f2639b3b0e1991812018cfc4b63e95098544f"

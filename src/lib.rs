@@ -7,6 +7,7 @@
 
 pub mod emit;
 pub mod ir;
+pub mod reflection;
 pub mod ty;
 pub mod vendor;
 
@@ -29,6 +30,7 @@ pub const OUTPUT: &str = "schema";
 pub const PROJECT: &str = "project.schema.json";
 pub const META: &str = "meta.schema.json";
 pub const MODEL: &str = "model.schema.json";
+pub const INPUT_ACTION_SYSTEM: &str = "input-action-system.schema.json";
 pub const MANIFEST: &str = "manifest.json";
 
 /// The generated documents, keyed by their file name under `schema/`.
@@ -53,12 +55,18 @@ pub fn generate(root: &Path) -> Result<Artifacts> {
         .collect();
     let registry = ir::read(&parsed)?;
 
+    let inputs = reflection::input_action_system()?;
+
     let mut files = BTreeMap::new();
     files.insert(PROJECT.to_owned(), pretty(&project(&registry, &pin)?)?);
     files.insert(META.to_owned(), pretty(&meta(&registry, &pin)?)?);
     files.insert(MODEL.to_owned(), pretty(&model(&registry, &pin)?)?);
+    files.insert(
+        INPUT_ACTION_SYSTEM.to_owned(),
+        pretty(&input_action_system(&inputs))?,
+    );
 
-    let manifest = manifest(&pin, &registry, &files);
+    let manifest = manifest(&pin, &registry, &inputs.version, &files);
     files.insert(MANIFEST.to_owned(), pretty(&manifest)?);
 
     Ok(Artifacts { files })
@@ -120,7 +128,7 @@ fn project(registry: &Registry, pin: &Pin) -> Result<Value> {
          instances Rojo builds or serves, and the settings it uses to do so.",
         body,
         compiler.defs(),
-        pin,
+        &rojo(pin),
     ))
 }
 
@@ -139,7 +147,7 @@ fn meta(registry: &Registry, pin: &Pin) -> Result<Value> {
          `init.meta.json`; elsewhere Rojo ignores it.",
         body,
         compiler.defs(),
-        pin,
+        &rojo(pin),
     ))
 }
 
@@ -155,8 +163,40 @@ fn model(registry: &Registry, pin: &Pin) -> Result<Value> {
          ignored.",
         body,
         compiler.defs(),
-        pin,
+        &rojo(pin),
     ))
+}
+
+/// How a schema compiled from the vendored Rojo sources records its origin.
+fn rojo(pin: &Pin) -> String {
+    format!(
+        "Compiled from Rojo {} by rojo-schema. Do not edit by hand.",
+        pin.tag
+    )
+}
+
+/// The one schema that does not come from Rojo's sources.
+///
+/// It narrows the JSON model format to an input action tree, so it is compiled
+/// from the reflection database instead and is versioned by that database.
+fn input_action_system(inputs: &reflection::Compiled) -> Value {
+    document(
+        INPUT_ACTION_SYSTEM,
+        "Roblox input action model",
+        "An input action tree written as JSON, stored in a `.model.json` file. \
+         A deliberately narrow view of the JSON model format: it takes only \
+         `InputContext`, `InputAction` and `InputBinding`, only nests them in \
+         that order, and takes only the properties a file can actually set. \
+         Unknown keys are refused, which Rojo itself does not do, because a \
+         file points at this schema to have its mistakes caught.",
+        inputs.body.clone(),
+        inputs.defs.clone(),
+        &format!(
+            "Compiled from the Roblox reflection database {} by rojo-schema. \
+             Do not edit by hand.",
+            inputs.version
+        ),
+    )
 }
 
 fn document(
@@ -165,7 +205,7 @@ fn document(
     description: &str,
     body: Value,
     defs: Map<String, Value>,
-    pin: &Pin,
+    provenance: &str,
 ) -> Value {
     let mut root = match body {
         Value::Object(object) => object,
@@ -190,13 +230,7 @@ fn document(
     root.insert("$id".into(), json!(format!("{BASE}/{file}")));
     root.insert("title".into(), json!(title));
     root.insert("description".into(), json!(description));
-    root.insert(
-        "$comment".into(),
-        json!(format!(
-            "Compiled from Rojo {} by rojo-schema. Do not edit by hand.",
-            pin.tag
-        )),
-    );
+    root.insert("$comment".into(), json!(provenance));
 
     if !defs.is_empty() {
         root.insert("$defs".into(), Value::Object(defs));
@@ -205,7 +239,12 @@ fn document(
     Value::Object(root)
 }
 
-fn manifest(pin: &Pin, registry: &Registry, files: &BTreeMap<String, String>) -> Value {
+fn manifest(
+    pin: &Pin,
+    registry: &Registry,
+    reflection_version: &str,
+    files: &BTreeMap<String, String>,
+) -> Value {
     let schemas: Map<String, Value> = files
         .iter()
         .map(|(name, contents)| (name.clone(), json!(digest(contents))))
@@ -232,6 +271,11 @@ fn manifest(pin: &Pin, registry: &Registry, files: &BTreeMap<String, String>) ->
             "repository": pin.repository,
             "tag": pin.tag,
             "version": pin.version,
+        },
+        // The input action schema is compiled from the reflection database
+        // rather than from Rojo, so it moves when this version moves.
+        "roblox": {
+            "reflectionDatabase": reflection_version,
         },
         "containers": registry.len(),
         "sources": sources,

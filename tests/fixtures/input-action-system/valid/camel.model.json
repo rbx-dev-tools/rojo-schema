@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/rbx-forge/rojo-schema/main/schema/input-action-system.schema.json",
+  "className": "InputContext",
+  "id": "combat",
+  "attributes": {
+    "Layer": "Combat",
+    "Debug": false
+  },
+  "properties": {
+    "Priority": 20
+  },
+  "children": [
+    {
+      "className": "InputAction",
+      "name": "Aim",
+      "properties": {
+        "Type": "Direction1D",
+        "Archivable": true
+      },
+      "children": [
+        {
+          "className": "InputBinding",
+          "name": "Trigger",
+          "properties": {
+            "Forward": "ButtonL2",
+            "Scale": 1.5,
+            "ResponseCurve": 2
+          }
+        }
+      ]
+    }
+  ]
+}

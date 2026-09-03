@@ -1,0 +1,57 @@
+{
+  "ClassName": "InputContext",
+  "Properties": {
+    "Priority": 10,
+    "Enabled": true,
+    "Sink": false
+  },
+  "Children": [
+    {
+      "ClassName": "InputAction",
+      "Name": "Attack",
+      "Properties": {
+        "Type": "Bool"
+      },
+      "Children": [
+        {
+          "ClassName": "InputBinding",
+          "Name": "Mouse",
+          "Properties": {
+            "KeyCode": "MouseLeftButton",
+            "Type": "Automatic",
+            "PressedThreshold": 0.5
+          }
+        },
+        {
+          "ClassName": "InputBinding",
+          "Name": "Gamepad",
+          "Properties": {
+            "KeyCode": "ButtonR2",
+            "Type": "Scriptable"
+          }
+        }
+      ]
+    },
+    {
+      "ClassName": "InputAction",
+      "Name": "Move",
+      "Properties": {
+        "Type": "Direction2D"
+      },
+      "Children": [
+        {
+          "ClassName": "InputBinding",
+          "Name": "Keyboard",
+          "Properties": {
+            "Forward": "W",
+            "Backward": "S",
+            "Left": "A",
+            "Right": "D",
+            "ClampMagnitudeToOne": true,
+            "Vector2Scale": [1, 1]
+          }
+        }
+      ]
+    }
+  ]
+}
