@@ -23,7 +23,7 @@ use serde_json::{json, Map, Value};
 use crate::{emit::Compiler, ir::Registry, vendor::Pin};
 
 /// Where the published schemas are served from, used for `$id`.
-const BASE: &str = "https://raw.githubusercontent.com/rbx-forge/rojo-schema/main/schema";
+const BASE: &str = "https://raw.githubusercontent.com/rbx-dev-tools/rojo-schema/main/schema";
 /// The directory the generated schemas live in, relative to the repository.
 pub const OUTPUT: &str = "schema";
 

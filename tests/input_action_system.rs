@@ -106,7 +106,7 @@ fn points_an_editor_at_the_published_url() {
 
     assert_eq!(
         schema["$id"],
-        "https://raw.githubusercontent.com/rbx-forge/rojo-schema/main/schema/input-action-system.schema.json"
+        "https://raw.githubusercontent.com/rbx-dev-tools/rojo-schema/main/schema/input-action-system.schema.json"
     );
     assert!(
         schema["$comment"]

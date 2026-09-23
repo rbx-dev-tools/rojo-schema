@@ -162,7 +162,7 @@
       "description": "A user-friendly version of `Variant` that supports specifying ambiguous values. Ambiguous values need a reflection database to be resolved to a usable value.\n\nThis type is used in Rojo projects and JSON models to make specifying the most common types of properties, like strings or vectors, much easier."
     }
   },
-  "$id": "https://raw.githubusercontent.com/rbx-forge/rojo-schema/main/schema/model.schema.json",
+  "$id": "https://raw.githubusercontent.com/rbx-dev-tools/rojo-schema/main/schema/model.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": true,
   "allOf": [
