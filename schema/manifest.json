@@ -13,10 +13,10 @@
     "version": "7.7.0"
   },
   "schemas": {
-    "input-action-system.schema.json": "851f33215f602ef9f0dbf1cf3b09a2e4822b18baaf3f8fc072316b8258cb358d",
-    "meta.schema.json": "8097426a8c97fafb29ca020ab0c2b3a7107113ccbcee4f4cb1bd95a8b308a631",
-    "model.schema.json": "eeb91a3c41d44f27bf63e9b4f5a8323f444eb04b3bd56d7d873daacff2244a07",
-    "project.schema.json": "9b0fb08ce498788f2b5125ae924f2639b3b0e1991812018cfc4b63e95098544f"
+    "input-action-system.schema.json": "9bdb63ad14b7a62090d29e8aedc14254a0138cf8379d7bf95d3419f0e08c9d10",
+    "meta.schema.json": "ca810dcb20baa4d28b1fbcae7bdd1a767340e516395a421d7dffdfe25ed93c1f",
+    "model.schema.json": "09360834933a222954406b9a722a15876adcf77645e43d405c0ca3b72d0f91b2",
+    "project.schema.json": "5a9edcb0d326883647b73aec3d48c63db37d984911604a3c6255be8a0339bf69"
   },
   "sources": [
     {

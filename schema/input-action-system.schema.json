@@ -948,7 +948,7 @@
       "type": "string"
     }
   },
-  "$id": "https://raw.githubusercontent.com/rbx-forge/rojo-schema/main/schema/input-action-system.schema.json",
+  "$id": "https://raw.githubusercontent.com/rbx-dev-tools/rojo-schema/main/schema/input-action-system.schema.json",
   "$ref": "#/$defs/InputContext",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "An input action tree written as JSON, stored in a `.model.json` file. A deliberately narrow view of the JSON model format: it takes only `InputContext`, `InputAction` and `InputBinding`, only nests them in that order, and takes only the properties a file can actually set. Unknown keys are refused, which Rojo itself does not do, because a file points at this schema to have its mistakes caught.",
