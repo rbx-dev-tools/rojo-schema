@@ -236,7 +236,8 @@ fn is_settable(property: &PropertyDescriptor) -> bool {
     let serialises = matches!(
         property.kind,
         PropertyKind::Canonical {
-            serialization: PropertySerialization::Serializes | PropertySerialization::SerializesAs(_)
+            serialization: PropertySerialization::Serializes
+                | PropertySerialization::SerializesAs(_)
         }
     );
 
@@ -489,7 +490,10 @@ mod tests {
         let defs = compiled().defs;
         let binding = &defs["InputBindingProperties"]["properties"];
 
-        assert_eq!(binding["ClampMagnitudeToOne"]["anyOf"][0]["type"], "boolean");
+        assert_eq!(
+            binding["ClampMagnitudeToOne"]["anyOf"][0]["type"],
+            "boolean"
+        );
         assert_eq!(binding["PressedThreshold"]["anyOf"][0]["type"], "number");
         assert_eq!(binding["Vector2Scale"]["anyOf"][0]["minItems"], 2);
         assert_eq!(binding["Vector3Scale"]["anyOf"][0]["maxItems"], 3);
@@ -509,7 +513,6 @@ mod tests {
         // An action or a binding on its own is not a file.
         assert!(compiled.body["anyOf"].is_null());
     }
-
 
     #[test]
     fn compiles_the_same_schema_twice() {
