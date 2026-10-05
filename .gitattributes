@@ -1,3 +1,8 @@
+# Everything written here uses LF, so git records LF even when an editor on
+# Windows writes CRLF. The two exceptions below are byte-sensitive, and a later
+# rule wins, so they must stay after this one.
+* text=auto eol=lf
+
 # The vendored Rojo sources are hashed byte for byte, so git must never rewrite
 # their line endings. Without this, a checkout on Windows fails the digest check.
 vendor/** -text
