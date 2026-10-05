@@ -8,8 +8,8 @@
 # half-refreshed vendor fails instead of silently producing a stale schema.
 
 repository = "https://github.com/rojo-rbx/rojo"
-tag = "v7.7.0"
-version = "7.7.0"
+tag = "v7.7.1"
+version = "7.7.1"
 
 [[files]]
 path = "project.rs"
@@ -24,7 +24,7 @@ sha256 = "2c66fb33724ade11713e7a7620d9264bfe72b90d6b7fc4861188eeea7299041f"
 [[files]]
 path = "resolution.rs"
 source = "src/resolution.rs"
-sha256 = "a6ebcc9a2d317d8ccf7b9ffcac2dab41ff2dd80520e15eab362e0312a5ec7867"
+sha256 = "3abaa2f28bfcf789dc987dd3ba1f5142334b526e526a20eb3835c9296e7db012"
 
 [[files]]
 path = "snapshot/metadata.rs"
@@ -49,4 +49,4 @@ sha256 = "f42658bbfa474f6241b3aae1f78e040d93cdb4eac96de6f015b023153d754d84"
 [[files]]
 path = "syncback/mod.rs"
 source = "src/syncback/mod.rs"
-sha256 = "cb039512d5ae0c1e0a66a97e2aee53430a564835b246a17f2127a4d263ffa90b"
+sha256 = "623a26405f467222ba310632a6d8b52c34a0f2f9f66a2fc7ef3abb33da8ba5ae"

@@ -9,14 +9,14 @@
   },
   "rojo": {
     "repository": "https://github.com/rojo-rbx/rojo",
-    "tag": "v7.7.0",
-    "version": "7.7.0"
+    "tag": "v7.7.1",
+    "version": "7.7.1"
   },
   "schemas": {
     "input-action-system.schema.json": "9bdb63ad14b7a62090d29e8aedc14254a0138cf8379d7bf95d3419f0e08c9d10",
-    "meta.schema.json": "ca810dcb20baa4d28b1fbcae7bdd1a767340e516395a421d7dffdfe25ed93c1f",
-    "model.schema.json": "09360834933a222954406b9a722a15876adcf77645e43d405c0ca3b72d0f91b2",
-    "project.schema.json": "5a9edcb0d326883647b73aec3d48c63db37d984911604a3c6255be8a0339bf69"
+    "meta.schema.json": "f0e3277e703c99aa3a01af6cd032df28c984689c74e897c0708347dc436ba997",
+    "model.schema.json": "10928d5fe77dd6ebdba38ff7c6b48bbf972a0a414d68e7eac5db2a787eeabd25",
+    "project.schema.json": "3db4dc357084d8a968425522f2ef9e7a06b23ec4e027a6c4104c0f7e817fe3b5"
   },
   "sources": [
     {
@@ -31,7 +31,7 @@
     },
     {
       "path": "resolution.rs",
-      "sha256": "a6ebcc9a2d317d8ccf7b9ffcac2dab41ff2dd80520e15eab362e0312a5ec7867",
+      "sha256": "3abaa2f28bfcf789dc987dd3ba1f5142334b526e526a20eb3835c9296e7db012",
       "source": "src/resolution.rs"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "path": "syncback/mod.rs",
-      "sha256": "cb039512d5ae0c1e0a66a97e2aee53430a564835b246a17f2127a4d263ffa90b",
+      "sha256": "623a26405f467222ba310632a6d8b52c34a0f2f9f66a2fc7ef3abb33da8ba5ae",
       "source": "src/syncback/mod.rs"
     }
   ]
