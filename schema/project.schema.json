@@ -1,5 +1,5 @@
 {
-  "$comment": "Compiled from Rojo v7.7.0 by rojo-schema. Do not edit by hand.",
+  "$comment": "Compiled from Rojo v7.7.1 by rojo-schema. Do not edit by hand.",
   "$defs": {
     "AmbiguousValue": {
       "anyOf": [
